@@ -331,7 +331,7 @@ h6 {
 
 .navmenu .dropdown a,
 .navmenu .dropdown a:focus {
-  color: --nav-dropdown-color;
+  color: var(--nav-dropdown-color);
 }
 
 .navmenu .dropdown a:hover,
@@ -1272,4 +1272,341 @@ section,
 --------------------------------------------------------------*/
 .starter-section {
   /* Add your styles here */
+}
+
+/*--------------------------------------------------------------
+# Hero CV Buttons
+--------------------------------------------------------------*/
+.hero .hero-subtitle {
+  margin-top: 12px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.hero .cv-buttons {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero .cv-buttons a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 26px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.3s;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.hero .cv-buttons .btn-download {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+.hero .cv-buttons .btn-download:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 15%);
+  color: #fff;
+}
+
+.hero .cv-buttons .btn-view {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.hero .cv-buttons .btn-view:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/*--------------------------------------------------------------
+# Journey / Timeline Section
+--------------------------------------------------------------*/
+.journey .timeline {
+  position: relative;
+  padding: 0;
+  list-style: none;
+}
+
+.journey .timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent-color);
+  transform: translateX(-50%);
+}
+
+.journey .timeline-item {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: calc(50% + 40px);
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.journey .timeline-item:nth-child(even) {
+  justify-content: flex-start;
+  padding-right: 0;
+  padding-left: calc(50% + 40px);
+}
+
+.journey .timeline-item::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 18px;
+  width: 14px;
+  height: 14px;
+  background: var(--accent-color);
+  border: 3px solid var(--background-color);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.journey .timeline-content {
+  background: var(--surface-color);
+  padding: 20px 24px;
+  border-radius: 10px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+  max-width: 380px;
+  width: 100%;
+  border-left: 3px solid var(--accent-color);
+}
+
+.journey .timeline-item:nth-child(even) .timeline-content {
+  border-left: none;
+  border-right: 3px solid var(--accent-color);
+}
+
+.journey .timeline-year {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: var(--heading-font);
+}
+
+.journey .timeline-content h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: var(--heading-color);
+}
+
+.journey .timeline-content p {
+  font-size: 13px;
+  margin: 0;
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+  line-height: 1.5;
+}
+
+.journey .timeline-icon {
+  font-size: 18px;
+  color: var(--accent-color);
+  margin-bottom: 6px;
+}
+
+@media (max-width: 768px) {
+  .journey .timeline::before {
+    left: 16px;
+  }
+
+  .journey .timeline-item,
+  .journey .timeline-item:nth-child(even) {
+    justify-content: flex-start;
+    padding-right: 0;
+    padding-left: 50px;
+  }
+
+  .journey .timeline-item::after {
+    left: 16px;
+  }
+
+  .journey .timeline-content,
+  .journey .timeline-item:nth-child(even) .timeline-content {
+    border-left: 3px solid var(--accent-color);
+    border-right: none;
+    max-width: 100%;
+  }
+}
+
+/*--------------------------------------------------------------
+# Portfolio — Featured Project
+--------------------------------------------------------------*/
+.portfolio .featured-project-card {
+  background: var(--surface-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+}
+
+.portfolio .featured-project-card img {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  object-fit: cover;
+}
+
+.portfolio .featured-project-card .featured-content {
+  padding: 36px 30px;
+}
+
+.portfolio .featured-badge {
+  background: var(--accent-color);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 14px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.portfolio .featured-project-card h3 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--heading-color);
+}
+
+.portfolio .featured-project-card .featured-desc {
+  font-size: 15px;
+  margin-bottom: 18px;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  line-height: 1.7;
+}
+
+.portfolio .featured-project-card .tech-tags {
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.portfolio .featured-project-card .tech-tags span {
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: var(--nav-font);
+}
+
+.portfolio .featured-project-card .project-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.portfolio .featured-project-card .project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.portfolio .featured-project-card .btn-github {
+  background: var(--heading-color);
+  color: var(--contrast-color);
+}
+
+.portfolio .featured-project-card .btn-github:hover {
+  background: color-mix(in srgb, var(--heading-color), transparent 20%);
+  color: var(--contrast-color);
+}
+
+.portfolio .other-projects-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid color-mix(in srgb, var(--default-color), transparent 88%);
+}
+
+/*--------------------------------------------------------------
+# Portfolio — GitHub Link on Cards
+--------------------------------------------------------------*/
+.portfolio .portfolio-info .github-link {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  font-size: 22px;
+  color: #fff;
+  transition: 0.3s;
+  z-index: 4;
+  line-height: 1;
+}
+
+.portfolio .portfolio-info .github-link:hover {
+  color: var(--accent-color);
+}
+
+/*--------------------------------------------------------------
+# Tech Stack Section
+--------------------------------------------------------------*/
+.tech-stack .tech-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.tech-stack .tech-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 16px 16px;
+  background: var(--surface-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  width: 95px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.tech-stack .tech-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+.tech-stack .tech-item img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.tech-stack .tech-item span {
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  font-family: var(--nav-font);
+  line-height: 1.3;
 }

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Update URL below after deployment
+Sitemap: https://kaga-nim.github.io/portofolio/sitemap.xml
