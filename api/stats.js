@@ -2,18 +2,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   const token = process.env.GC_TOKEN;
-
-  // DEBUG: cek apakah token terbaca (tidak expose nilainya)
-  if (!token) {
-    return res.status(500).json({
-      error: 'Token not configured',
-      debug: {
-        hasToken: false,
-        gcEnvKeys: Object.keys(process.env).filter(k => k.includes('GC')),
-        nodeVersion: process.version
-      }
-    });
-  }
+  if (!token) return res.status(500).json({ error: 'Token not configured' });
 
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
@@ -22,25 +11,33 @@ module.exports = async function handler(req, res) {
   const today = fmt(now);
   const weekAgo = fmt(new Date(now - 6 * 24 * 60 * 60 * 1000));
 
-  const headers = { 'Authorization': `Bearer ${token}` };
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+
+  const gcFetch = async (start, end) => {
+    const url = `https://habibabdulghani.goatcounter.com/api/v0/stats/hits?start=${encodeURIComponent(start + ' 00:00:00')}&end=${encodeURIComponent(end + ' 23:59:59')}`;
+    const r = await fetch(url, { headers });
+    const text = await r.text();
+    if (!r.ok) return { error: r.status, body: text.slice(0, 300) };
+    try { return JSON.parse(text); }
+    catch(e) { return { error: 'invalid json', body: text.slice(0, 300) }; }
+  };
 
   try {
-    const [r1, r2] = await Promise.all([
-      fetch(`https://habibabdulghani.goatcounter.com/api/v0/stats/hits?start=${today}+00%3A00%3A00&end=${today}+23%3A59%3A59`, { headers }),
-      fetch(`https://habibabdulghani.goatcounter.com/api/v0/stats/hits?start=${weekAgo}+00%3A00%3A00&end=${today}+23%3A59%3A59`, { headers })
+    const [d1, d2] = await Promise.all([
+      gcFetch(today, today),
+      gcFetch(weekAgo, today)
     ]);
 
-    const d1 = await r1.json();
-    const d2 = await r2.json();
+    if (d1.error || d2.error) {
+      return res.status(502).json({ debug: { d1, d2 } });
+    }
 
     const sum = arr => (arr || []).reduce((s, h) => s + (h.count || 0), 0);
-
-    res.json({
-      today: sum(d1.hits),
-      week: sum(d2.hits),
-      debug: { d1, d2 }
-    });
+    res.json({ today: sum(d1.hits), week: sum(d2.hits) });
   } catch (e) {
-    res.status(500).json({ error: e.message, stack: e.stack });
+    res.status(500).json({ error: e.message });
   }
 };
