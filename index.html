@@ -4,14 +4,14 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Habib Abdul Ghani — Guru DKV | Programmer Python | AI Enthusiast</title>
-  <meta name="description" content="Portfolio Habib Abdul Ghani — Guru DKV di SMK Puspita Husada, Asisten Laboratorium Komputer Universitas Pamulang, Programmer Python, dan AI & Automation Enthusiast.">
+  <title>Habib Abdul Ghani — Guru DKV | Programmer Python | AI Practitioner</title>
+  <meta name="description" content="Portfolio Habib Abdul Ghani — Guru DKV di SMK Puspita Husada, Asisten Laboratorium Komputer Universitas Pamulang, Programmer Python, dan AI Practitioner.">
   <meta name="keywords" content="Habib Abdul Ghani, Guru DKV, Programmer Python, AI, Machine Learning, Android Developer, FastAPI, BRIN, Universitas Pamulang, SMK Puspita Husada">
   <link rel="canonical" href="https://kaga-nim.github.io/portofolio/">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Habib Abdul Ghani — Portfolio">
-  <meta property="og:description" content="Guru DKV | Asisten Lab Komputer | Programmer Python | AI Enthusiast">
+  <meta property="og:description" content="Guru DKV | Asisten Lab Komputer | Programmer Python | AI Practitioner">
   <meta property="og:image" content="assets/img/my-profile-img.jpg">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kaga-nim.github.io/portofolio/">
@@ -19,7 +19,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Habib Abdul Ghani — Portfolio">
-  <meta name="twitter:description" content="Guru DKV | Asisten Lab Komputer | Programmer Python | AI Enthusiast">
+  <meta name="twitter:description" content="Guru DKV | Asisten Lab Komputer | Programmer Python | AI Practitioner">
   <meta name="twitter:image" content="assets/img/my-profile-img.jpg">
 
   <!-- Favicons -->
@@ -185,6 +185,22 @@
       color: rgba(255,255,255,.4);
       font-size: .9rem;
     }
+
+    /* Project Maturity Badges */
+    .project-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+    .badge-live    { background: #d1fae5; color: #065f46; }
+    .badge-research{ background: #ede9fe; color: #5b21b6; }
+    .badge-proto   { background: #fff3cd; color: #92400e; }
+    .badge-wip     { background: #f3f4f6; color: #374151; }
   </style>
 </head>
 
@@ -284,9 +300,9 @@
             <img src="assets/img/my-profile-img.jpg" class="img-fluid" alt="Habib Abdul Ghani">
           </div>
           <div class="col-lg-8 content">
-            <h2>Guru DKV &amp; Software Engineer.</h2>
+            <h2>Guru DKV &amp; Programmer.</h2>
             <p class="fst-italic py-3">
-              Saya merupakan Guru DKV di SMK Puspita Husada dan Asisten Laboratorium Komputer Universitas Pamulang yang memiliki minat pada Artificial Intelligence, Automation, Backend Development, Android Development, serta pengembangan solusi berbasis data.
+              Guru DKV di SMK Puspita Husada dan Asisten Laboratorium Komputer Universitas Pamulang. Membangun solusi nyata dengan Python, pernah mendalami riset AI di BRIN, dan mengajar DKV kepada generasi berikutnya — dengan satu paper diterbitkan dan satu lagi under review.
             </p>
             <div class="row">
               <div class="col-lg-6">
@@ -753,6 +769,7 @@
                 <div class="portfolio-info">
                   <h4>FairyAI</h4>
                   <p>Android AI Assistant dengan Kotlin &amp; Jetpack Compose</p>
+                  <span class="project-badge badge-proto">Prototype</span>
                   <a href="assets/img/portfolio/app-2.jpg" title="FairyAI" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="https://github.com/Kaga-nim" target="_blank" title="GitHub" class="github-link"><i class="bi bi-github"></i></a>
                 </div>
@@ -765,6 +782,7 @@
                 <div class="portfolio-info">
                   <h4>AI Predictive Maintenance SMR</h4>
                   <p>Sistem prediktif berbasis ML untuk reaktor nuklir — BRIN</p>
+                  <span class="project-badge badge-research">Research</span>
                   <a href="assets/img/portfolio/product-1.jpg" title="AI Predictive Maintenance" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                 </div>
               </div>
@@ -776,6 +794,7 @@
                 <div class="portfolio-info">
                   <h4>BRIN TLD System</h4>
                   <p>Digitalisasi manajemen Thermoluminescent Dosimeter — BRIN</p>
+                  <span class="project-badge badge-research">Research</span>
                   <a href="assets/img/portfolio/product-2.jpg" title="TLD System" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                 </div>
               </div>
@@ -787,6 +806,7 @@
                 <div class="portfolio-info">
                   <h4>Intect E-Catalog</h4>
                   <p>Sistem informasi produk &amp; promosi berbasis Laravel — CV Intect Teknologi Sejahtera</p>
+                  <span class="project-badge badge-live">Live</span>
                   <a href="assets/img/portfolio/branding-1.jpg" title="Intect E-Catalog" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="https://intect.id" target="_blank" title="Kunjungi intect.id" class="github-link"><i class="bi bi-globe"></i></a>
                 </div>
@@ -799,6 +819,7 @@
                 <div class="portfolio-info">
                   <h4>Thalassemia Care</h4>
                   <p>Aplikasi Android &amp; web (thalassemiacare.com) untuk manajemen perawatan thalassemia</p>
+                  <span class="project-badge badge-live">Live</span>
                   <a href="assets/img/portfolio/app-3.jpg" title="Thalassemia Care" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="https://github.com/Kaga-nim" target="_blank" title="GitHub" class="github-link"><i class="bi bi-github"></i></a>
                 </div>
@@ -811,6 +832,7 @@
                 <div class="portfolio-info">
                   <h4>Cirebon Digital City</h4>
                   <p>Platform web untuk ekosistem kota digital Cirebon</p>
+                  <span class="project-badge badge-live">Live</span>
                   <a href="assets/img/portfolio/branding-2.jpg" title="Cirebon Digital City" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="https://cirebondigital.id" target="_blank" title="Kunjungi cirebondigital.id" class="github-link"><i class="bi bi-globe"></i></a>
                 </div>
@@ -823,6 +845,7 @@
                 <div class="portfolio-info">
                   <h4>Web Informasi Tapak Suci UNPAM</h4>
                   <p>Website informasi dan kegiatan UKM Tapak Suci Universitas Pamulang</p>
+                  <span class="project-badge badge-live">Live</span>
                   <a href="assets/img/portfolio/branding-3.jpg" title="Web Tapak Suci UNPAM" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="https://tapaksuciunpam.vercel.app/" target="_blank" title="Kunjungi website" class="github-link"><i class="bi bi-globe"></i></a>
                 </div>
@@ -835,6 +858,7 @@
                 <div class="portfolio-info">
                   <h4>DKV Teacher Kit</h4>
                   <p>Perangkat pembelajaran DKV inovatif berbasis teknologi untuk SMK</p>
+                  <span class="project-badge badge-wip">In Development</span>
                   <a href="assets/img/portfolio/product-3.jpg" title="DKV Teacher Kit" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="https://github.com/Kaga-nim" target="_blank" title="GitHub" class="github-link"><i class="bi bi-github"></i></a>
                 </div>
@@ -1213,7 +1237,7 @@
         <p>© 2025 <strong class="px-1 sitename">Habib Abdul Ghani</strong> — All Rights Reserved</p>
       </div>
       <div class="credits text-center" style="font-size:0.8rem; opacity:0.7;">
-        Guru DKV · Asisten Lab Komputer · Programmer Python · AI Enthusiast
+        Guru DKV · Asisten Lab Komputer · Programmer Python · AI Practitioner
       </div>
     </div>
   </footer>
