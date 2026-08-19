@@ -1152,12 +1152,12 @@
       document.body.appendChild(s);
     })();
 
-    // Load visitor count via CounterAPI (no signup needed, shows total page visits)
-    fetch('https://api.counterapi.dev/v1/kaga-nim/portfolio/up')
+    // Load visitor count via GoatCounter public counter API
+    fetch('https://' + GC_CODE + '.goatcounter.com/counter//.json')
       .then(r => r.json())
       .then(d => {
         const el = document.getElementById('vcCount');
-        if (el && d.count) el.textContent = d.count.toLocaleString('id-ID');
+        if (el && d.count) el.textContent = Number(d.count).toLocaleString('id-ID');
       })
       .catch(() => {
         const el = document.getElementById('vcCount');

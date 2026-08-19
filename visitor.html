@@ -222,12 +222,12 @@
 <script>
   const GC_CODE = 'habibabdulghani';
 
-  // Load total count from CounterAPI
-  fetch('https://api.counterapi.dev/v1/kaga-nim/portfolio/get')
+  // Load total count from GoatCounter public counter API
+  fetch('https://' + GC_CODE + '.goatcounter.com/counter//.json')
     .then(r => r.json())
     .then(d => {
       if (!d.count) return;
-      const fmt = d.count.toLocaleString('id-ID');
+      const fmt = Number(d.count).toLocaleString('id-ID');
       const statEl = document.getElementById('statTotal');
       const bigEl = document.getElementById('bigCount');
       if (statEl) statEl.textContent = fmt;
@@ -235,8 +235,6 @@
     })
     .catch(() => {});
 
-  // Simulate today/week (CounterAPI doesn't support time-series)
-  // When GoatCounter is active, these will be replaced with real data
   document.getElementById('statToday').textContent = '—';
   document.getElementById('statWeek').textContent = '—';
 </script>
