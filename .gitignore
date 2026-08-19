@@ -1,0 +1,10 @@
+# Environment variables — JANGAN PUSH ke GitHub
+.env
+.env.local
+.env*.local
+
+# macOS
+.DS_Store
+
+# Node
+node_modules/
