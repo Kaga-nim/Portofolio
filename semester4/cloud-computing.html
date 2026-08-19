@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Computing — Semester 4 | Habib Abdul Ghani</title>
+  <meta name="description" content="File browser Semester 4 — Cloud Computing. S1 Teknik Informatika Universitas Pamulang.">
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sidebar-w: 230px;
+      --toolbar-h: 44px;
+      --addr-h: 36px;
+      --bg: #f3f3f3;
+      --panel: #ffffff;
+      --border: #d0d0d0;
+      --accent: #0078d4;
+      --accent-light: #e5f0fb;
+      --text: #1a1a1a;
+      --muted: #717171;
+      --hover: #e8e8e8;
+      --active: #d0e6f7;
+      --folder-color: #ffc83d;
+    }
+    body { font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* ── TOP BAR ── */
+    .topbar { height: var(--toolbar-h); background: var(--panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 12px; gap: 6px; flex-shrink: 0; }
+    .topbar .back-home { display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text); font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: 5px; transition: background .15s; }
+    .topbar .back-home:hover { background: var(--hover); }
+    .topbar .back-home i { font-size: 15px; color: var(--accent); }
+    .topbar-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+    .topbar-title { font-weight: 600; font-size: 13px; color: var(--text); }
+    .topbar-spacer { flex: 1; }
+    .topbar-info { font-size: 11px; color: var(--muted); }
+
+    /* ── ADDRESS BAR ── */
+    .addrbar { height: var(--addr-h); background: var(--panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 12px; gap: 4px; flex-shrink: 0; }
+    .breadcrumb-nav { display: flex; align-items: center; gap: 2px; flex: 1; }
+    .breadcrumb-nav a, .breadcrumb-nav span {
+      font-size: 12.5px; font-weight: 500; text-decoration: none; color: var(--text);
+      padding: 3px 8px; border-radius: 4px; transition: background .12s;
+    }
+    .breadcrumb-nav a:hover { background: var(--hover); color: var(--accent); }
+    .breadcrumb-nav .sep { color: var(--muted); padding: 0 2px; font-size: 11px; }
+    .breadcrumb-nav .current { color: var(--accent); font-weight: 600; }
+    .view-toggle { display: flex; gap: 2px; }
+    .view-btn { border: none; background: none; cursor: pointer; padding: 4px 7px; border-radius: 4px; color: var(--muted); font-size: 14px; transition: background .12s; }
+    .view-btn.active, .view-btn:hover { background: var(--hover); color: var(--text); }
+
+    /* ── MAIN LAYOUT ── */
+    .main-layout { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { width: var(--sidebar-w); background: var(--panel); border-right: 1px solid var(--border); overflow-y: auto; flex-shrink: 0; padding: 8px 0; }
+    .sidebar-section { margin-bottom: 4px; }
+    .sidebar-section-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); padding: 6px 16px 3px; }
+    .tree-item { display: flex; align-items: center; gap: 7px; padding: 6px 12px 6px 16px; cursor: pointer; border-radius: 0; transition: background .1s; font-size: 12.5px; text-decoration: none; color: var(--text); }
+    .tree-item:hover { background: var(--hover); }
+    .tree-item.active { background: var(--active); color: var(--accent); font-weight: 600; }
+    .tree-item.disabled { opacity: .5; cursor: default; pointer-events: none; }
+    .tree-item .ti-icon { font-size: 15px; }
+    .tree-item.active .ti-icon { color: var(--accent); }
+    .tree-item .ti-soon { font-size: 9.5px; background: #e0e0e0; color: #888; border-radius: 3px; padding: 1px 5px; margin-left: auto; }
+    .sidebar-sep { height: 1px; background: var(--border); margin: 6px 12px; }
+
+    /* ── CONTENT AREA ── */
+    .content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+    /* ── COLUMN HEADER ── */
+    .col-header { display: grid; grid-template-columns: 1fr 100px 80px; gap: 0; padding: 5px 16px; background: #f9f9f9; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .col-header span { font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+
+    /* ── FILE LIST ── */
+    .file-list { padding: 4px 0; flex: 1; }
+    .file-row {
+      display: grid; grid-template-columns: 1fr 100px 80px;
+      align-items: center; padding: 5px 16px; cursor: pointer;
+      transition: background .1s; border-radius: 0; text-decoration: none; color: var(--text);
+      border-bottom: 1px solid transparent;
+    }
+    .file-row:hover { background: var(--hover); }
+    .file-row.folder-row { font-weight: 500; }
+    .file-name-cell { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .file-icon { font-size: 18px; flex-shrink: 0; }
+    .fi-folder  { color: var(--folder-color); }
+    .fi-pdf     { color: #e53935; }
+    .fi-pptx    { color: #d04a02; }
+    .fi-docx    { color: #2b7cd3; }
+    .fi-txt     { color: #888; }
+    .fi-sql     { color: #7b2f8e; }
+    .fi-php     { color: #4f5b93; }
+    .fi-code    { color: #0078d4; }
+    .fi-rar     { color: #e6a817; }
+    .fi-md      { color: #555; }
+    .fi-img     { color: #1ab67c; }
+    .fi-misc    { color: #aaa; }
+    .file-label { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-type  { font-size: 11.5px; color: var(--muted); }
+    .file-size  { font-size: 11.5px; color: var(--muted); text-align: right; }
+
+    /* ── SUBFOLDER TOGGLE ── */
+    .folder-toggle { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    .folder-toggle .caret { font-size: 10px; color: var(--muted); transition: transform .2s; }
+    .folder-toggle.open .caret { transform: rotate(90deg); }
+    .subfolder-content { display: none; background: #fafafa; border-bottom: 1px solid #eee; }
+    .subfolder-content.open { display: block; }
+    .subfolder-file {
+      display: grid; grid-template-columns: 1fr 100px 80px;
+      align-items: center; padding: 5px 16px 5px 44px;
+      transition: background .1s; text-decoration: none; color: var(--text);
+    }
+    .subfolder-file:hover { background: var(--hover); }
+
+    /* ── STATUS BAR ── */
+    .statusbar { height: 28px; background: var(--panel); border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; gap: 16px; flex-shrink: 0; }
+    .statusbar span { font-size: 11.5px; color: var(--muted); }
+
+    /* ── DOWNLOAD ALL BUTTON ── */
+    .dl-all-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--accent); color: #fff; text-decoration: none;
+      font-size: 12.5px; font-weight: 600; padding: 6px 14px;
+      border-radius: 6px; transition: background .15s, box-shadow .15s;
+      white-space: nowrap; margin-left: 4px;
+    }
+    .dl-all-btn:hover { background: #006bbf; box-shadow: 0 3px 10px rgba(0,120,212,.3); color: #fff; }
+    .dl-all-btn i { font-size: 14px; }
+    .dl-size { font-size: 10.5px; font-weight: 400; opacity: .85; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 680px) {
+      .sidebar { width: 0; display: none; }
+      .col-header { grid-template-columns: 1fr 70px; }
+      .file-row { grid-template-columns: 1fr 70px; }
+      .subfolder-file { grid-template-columns: 1fr 70px; }
+      .file-type { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="../index.html#semester4" class="back-home">
+    <i class="bi bi-house-door-fill"></i> Kembali ke Portfolio
+  </a>
+  <div class="topbar-sep"></div>
+  <span class="topbar-title">Semester 4 — Genap 2024/2025</span>
+  <div class="topbar-spacer"></div>
+  <span class="topbar-info">S1 Teknik Informatika · Universitas Pamulang</span>
+</div>
+
+<!-- ADDRESS BAR -->
+<div class="addrbar">
+  <nav class="breadcrumb-nav">
+    <span>04TPLM005</span>
+    <span class="sep"><i class="bi bi-chevron-right"></i></span>
+    <span class="current"><i class="bi bi-cloud-arrow-up-fill me-1" style="color:#0078d4;font-size:13px;"></i>Cloud Computing</span>
+  </nav>
+  <a href="cloud-computing-semester4.zip" download class="dl-all-btn">
+    <i class="bi bi-file-earmark-zip-fill"></i> Unduh Semua <span class="dl-size">11 MB</span>
+  </a>
+  <div class="view-toggle">
+    <button class="view-btn active" title="Detail"><i class="bi bi-list-ul"></i></button>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Mata Kuliah</div>
+
+      <a class="tree-item active" href="cloud-computing.html">
+        <i class="bi bi-cloud-arrow-up-fill ti-icon"></i> Cloud Computing
+      </a>
+      <div class="tree-item disabled">
+        <i class="bi bi-database ti-icon"></i> Basis Data I
+        <span class="ti-soon">segera</span>
+      </div>
+      <div class="tree-item disabled">
+        <i class="bi bi-graph-up-arrow ti-icon"></i> Data Mining
+        <span class="ti-soon">segera</span>
+      </div>
+      <div class="tree-item disabled">
+        <i class="bi bi-person-bounding-box ti-icon"></i> IMK
+        <span class="ti-soon">segera</span>
+      </div>
+      <div class="tree-item disabled">
+        <i class="bi bi-calculator ti-icon"></i> Metode Numerik
+        <span class="ti-soon">segera</span>
+      </div>
+      <div class="tree-item disabled">
+        <i class="bi bi-code-slash ti-icon"></i> Pemrograman I
+        <span class="ti-soon">segera</span>
+      </div>
+      <div class="tree-item disabled">
+        <i class="bi bi-diagram-3 ti-icon"></i> Analisa &amp; Perancangan
+        <span class="ti-soon">segera</span>
+      </div>
+      <div class="tree-item disabled">
+        <i class="bi bi-braces ti-icon"></i> Teori Bahasa &amp; Automata
+        <span class="ti-soon">segera</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- COLUMN HEADERS -->
+    <div class="col-header">
+      <span>Nama</span>
+      <span>Tipe</span>
+      <span style="text-align:right;">Ukuran</span>
+    </div>
+
+    <!-- FILE LIST -->
+    <div class="file-list" id="fileList">
+
+      <!-- FOLDER: ASLAB -->
+      <div class="file-row folder-row" onclick="toggleFolder('aslab', this)">
+        <div class="file-name-cell">
+          <i class="bi bi-folder-fill file-icon fi-folder"></i>
+          <span class="folder-toggle" id="aslab-toggle">
+            <i class="bi bi-chevron-right caret"></i>
+            <span class="file-label">ASLAB</span>
+          </span>
+        </div>
+        <span class="file-type">Folder</span>
+        <span class="file-size">—</span>
+      </div>
+      <div class="subfolder-content" id="aslab-sub">
+        <div style="padding: 10px 44px; font-size:12px; color: var(--muted); font-style:italic;">Folder ini kosong.</div>
+      </div>
+
+      <!-- FOLDER: crud -->
+      <div class="file-row folder-row" onclick="toggleFolder('crud', this)">
+        <div class="file-name-cell">
+          <i class="bi bi-folder-fill file-icon fi-folder"></i>
+          <span class="folder-toggle" id="crud-toggle">
+            <i class="bi bi-chevron-right caret"></i>
+            <span class="file-label">crud</span>
+          </span>
+        </div>
+        <span class="file-type">Folder</span>
+        <span class="file-size">8 item</span>
+      </div>
+      <div class="subfolder-content" id="crud-sub">
+        <a class="subfolder-file" href="cloud-computing/crud/db_crud.sql" target="_blank">
+          <div class="file-name-cell"><i class="bi bi-file-earmark-code file-icon fi-sql"></i><span class="file-label">db_crud.sql</span></div>
+          <span class="file-type">SQL</span><span class="file-size">1.5 KB</span>
+        </a>
+        <a class="subfolder-file" href="cloud-computing/crud/delete.php" target="_blank">
+          <div class="file-name-cell"><i class="bi bi-file-earmark-code file-icon fi-php"></i><span class="file-label">delete.php</span></div>
+          <span class="file-type">PHP</span><span class="file-size">205 B</span>
+        </a>
+        <a class="subfolder-file" href="cloud-computing/crud/index.php" target="_blank">
+          <div class="file-name-cell"><i class="bi bi-file-earmark-code file-icon fi-php"></i><span class="file-label">index.php</span></div>
+          <span class="file-type">PHP</span><span class="file-size">2.5 KB</span>
+        </a>
+        <a class="subfolder-file" href="cloud-computing/crud/koneksi.php" target="_blank">
+          <div class="file-name-cell"><i class="bi bi-file-earmark-code file-icon fi-php"></i><span class="file-label">koneksi.php</span></div>
+          <span class="file-type">PHP</span><span class="file-size">901 B</span>
+        </a>
+        <a class="subfolder-file" href="cloud-computing/crud/LICENSE" target="_blank">
+          <div class="file-name-cell"><i class="bi bi-file-earmark-text file-icon fi-txt"></i><span class="file-label">LICENSE</span></div>
+          <span class="file-type">Teks</span><span class="file-size">1.1 KB</span>
+        </a>
+        <a class="subfolder-file" href="cloud-computing/crud/README.md" target="_blank">
+          <div class="file-name-cell"><i class="bi bi-file-earmark-text file-icon fi-md"></i><span class="file-label">README.md</span></div>
+          <span class="file-type">Markdown</span><span class="file-size">674 B</span>
+        </a>
+        <a class="subfolder-file" href="cloud-computing/crud/tambah.php" target="_blank">
+          <div class="file-name-cell"><i class="bi bi-file-earmark-code file-icon fi-php"></i><span class="file-label">tambah.php</span></div>
+          <span class="file-type">PHP</span><span class="file-size">2.1 KB</span>
+        </a>
+        <a class="subfolder-file" href="cloud-computing/crud/update.php" target="_blank">
+          <div class="file-name-cell"><i class="bi bi-file-earmark-code file-icon fi-php"></i><span class="file-label">update.php</span></div>
+          <span class="file-type">PHP</span><span class="file-size">2.7 KB</span>
+        </a>
+      </div>
+
+      <!-- FILES -->
+      <a class="file-row" href="cloud-computing/Habib%20Abdul%20Ghani%20-%20Tugas%20Pertemuan%208.docx" download>
+        <div class="file-name-cell"><i class="bi bi-file-earmark-word file-icon fi-docx"></i><span class="file-label">Habib Abdul Ghani - Tugas Pertemuan 8.docx</span></div>
+        <span class="file-type">Word</span><span class="file-size">28.2 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Mengupload%20Webiste%20ke%20AWS%20dengan%20S3.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Mengupload Webiste ke AWS dengan S3.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">477.6 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Nilovar%20Asyiah%20Pertemuan%2016.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Nilovar Asyiah Pertemuan 16.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">1.54 MB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/PDF%20Pertemuan%201.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">PDF Pertemuan 1.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">345.4 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/PDF%20Pertemuan%202%20(1).pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">PDF Pertemuan 2 (1).pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">507.4 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/PDF%20Pertemuan%203%20(1).pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">PDF Pertemuan 3 (1).pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">216.6 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/PPT%20Pertemuan%202.pptx" download>
+        <div class="file-name-cell"><i class="bi bi-file-earmark-slides file-icon fi-pptx"></i><span class="file-label">PPT Pertemuan 2.pptx</span></div>
+        <span class="file-type">PowerPoint</span><span class="file-size">672.0 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/PPT%20Pertemuan%203.pptx" download>
+        <div class="file-name-cell"><i class="bi bi-file-earmark-slides file-icon fi-pptx"></i><span class="file-label">PPT Pertemuan 3.pptx</span></div>
+        <span class="file-type">PowerPoint</span><span class="file-size">672.0 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Pertemuan%2013%20Lainnya%202.0.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Pertemuan 13 Lainnya 2.0.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">1.53 MB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Pertemuan%2013%20Lainnya.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Pertemuan 13 Lainnya.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">1.48 MB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Pertemuan%2013.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Pertemuan 13.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">517.8 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Pertemuan%204.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Pertemuan 4.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">253.9 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Pertemuan%205.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Pertemuan 5.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">646.3 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Pertemuan%206.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Pertemuan 6.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">225.2 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Pertemuan%207.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Pertemuan 7.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">225.6 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Pertemuan%209.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Pertemuan 9.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">243.0 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Rangkuman%20Pertemuan%2012.docx" download>
+        <div class="file-name-cell"><i class="bi bi-file-earmark-word file-icon fi-docx"></i><span class="file-label">Rangkuman Pertemuan 12.docx</span></div>
+        <span class="file-type">Word</span><span class="file-size">14.0 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Rangkuman%20Pertemuan%2012.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Rangkuman Pertemuan 12.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">334.1 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Tugas%20Pertemuan%2021.docx" download>
+        <div class="file-name-cell"><i class="bi bi-file-earmark-word file-icon fi-docx"></i><span class="file-label">Tugas Pertemuan 21.docx</span></div>
+        <span class="file-type">Word</span><span class="file-size">17.8 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Tugas%20Pertemuan%2021.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Tugas Pertemuan 21.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">399.3 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Tugas%20Pertemuan%203.docx" download>
+        <div class="file-name-cell"><i class="bi bi-file-earmark-word file-icon fi-docx"></i><span class="file-label">Tugas Pertemuan 3.docx</span></div>
+        <span class="file-type">Word</span><span class="file-size">602.3 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/Tugas%20Pertemuan%203.pdf" target="_blank">
+        <div class="file-name-cell"><i class="bi bi-file-earmark-pdf file-icon fi-pdf"></i><span class="file-label">Tugas Pertemuan 3.pdf</span></div>
+        <span class="file-type">PDF</span><span class="file-size">901.4 KB</span>
+      </a>
+
+      <a class="file-row" href="cloud-computing/crud.rar" download>
+        <div class="file-name-cell"><i class="bi bi-file-earmark-zip file-icon fi-rar"></i><span class="file-label">crud.rar</span></div>
+        <span class="file-type">RAR Archive</span><span class="file-size">6.2 KB</span>
+      </a>
+
+    </div><!-- /file-list -->
+  </div><!-- /content -->
+</div><!-- /main-layout -->
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <span>24 item (2 folder, 22 file)</span>
+  <span>·</span>
+  <span>Cloud Computing · Semester 4 Genap 2024/2025</span>
+</div>
+
+<script>
+  function toggleFolder(id, row) {
+    const sub = document.getElementById(id + '-sub');
+    const toggle = document.getElementById(id + '-toggle');
+    const isOpen = sub.classList.contains('open');
+    sub.classList.toggle('open', !isOpen);
+    toggle.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>
