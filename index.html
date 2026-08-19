@@ -1276,6 +1276,23 @@
       });
   </script>
 
+<script>
+  (function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var words = document.querySelectorAll('.ht-word');
+    if (!words.length) return;
+    var current = 0;
+    function cycle() {
+      words.forEach(function(w, i) {
+        w.style.transition = 'opacity 0.7s ease';
+        w.style.opacity = i === current ? '1' : '0.3';
+      });
+      current = (current + 1) % words.length;
+    }
+    setTimeout(function() { cycle(); setInterval(cycle, 2500); }, 2200);
+  })();
+</script>
+
 </body>
 
 </html>
