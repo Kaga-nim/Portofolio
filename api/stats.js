@@ -4,31 +4,25 @@ module.exports = async function handler(req, res) {
   const token = process.env.GC_TOKEN;
   if (!token) return res.status(500).json({ error: 'Token not configured' });
 
-  const now = new Date();
-  const pad = n => String(n).padStart(2, '0');
-  const fmt = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-
-  const today = fmt(now);
-  const weekAgo = fmt(new Date(now - 6 * 24 * 60 * 60 * 1000));
-
   const headers = { 'Authorization': `Bearer ${token}` };
 
-  const gcFetch = async (start, end) => {
-    const url = `https://habibabdulghani.goatcounter.com/api/v0/stats/hits?start=${start}&end=${end}`;
+  const gcFetch = async (path) => {
+    const url = `https://habibabdulghani.goatcounter.com${path}`;
     const r = await fetch(url, { headers });
     const text = await r.text();
-    try { return JSON.parse(text); }
-    catch(e) { return { error: 'invalid json', body: text.slice(0, 500) }; }
+    try { return { status: r.status, data: JSON.parse(text) }; }
+    catch(e) { return { status: r.status, body: text.slice(0, 300) }; }
   };
 
   try {
-    const [d1, d2] = await Promise.all([
-      gcFetch(today, today),
-      gcFetch(weekAgo, today)
+    const [a, b, c, d] = await Promise.all([
+      gcFetch('/api/v0/stats/hits'),
+      gcFetch('/api/v0/stats/hits?start=2026-08-12&end=2026-08-19'),
+      gcFetch('/api/v0/stats/total?start=2026-08-12&end=2026-08-19'),
+      gcFetch('/api/v0/export')
     ]);
 
-    // Sementara return raw untuk debug
-    res.json({ today_raw: d1, week_raw: d2 });
+    res.json({ noParams: a, withDate: b, total: c, export: d });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
