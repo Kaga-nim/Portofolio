@@ -185,23 +185,11 @@
 <script>
   const GC_CODE = 'habibabdulghani';
 
-  // Load total count from GoatCounter public counter API
-  fetch('https://' + GC_CODE + '.goatcounter.com/counter//.json')
-    .then(r => r.json())
-    .then(d => {
-      if (!d.count) return;
-      const fmt = Number(d.count).toLocaleString('id-ID');
-      const statEl = document.getElementById('statTotal');
-      const bigEl = document.getElementById('bigCount');
-      if (statEl) statEl.textContent = fmt;
-      if (bigEl) bigEl.textContent = fmt;
-    })
-    .catch(() => {});
-
-  // Load today & 7-day stats via Vercel serverless function (token stays server-side)
+  // Load all stats dari satu sumber: Vercel serverless function
   fetch('/api/stats')
     .then(r => r.json())
     .then(d => {
+      if (d.total !== undefined) document.getElementById('statTotal').textContent = Number(d.total).toLocaleString('id-ID');
       if (d.today !== undefined) document.getElementById('statToday').textContent = Number(d.today).toLocaleString('id-ID');
       if (d.week !== undefined) document.getElementById('statWeek').textContent = Number(d.week).toLocaleString('id-ID');
     })

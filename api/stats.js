@@ -24,17 +24,20 @@ module.exports = async function handler(req, res) {
 
     let todayCount = 0;
     let weekCount = 0;
+    let totalCount = 0;
 
     for (const hit of data.hits || []) {
+      if (hit.path !== '/') continue; // hanya hitung root path
+      totalCount = hit.count || 0;
       for (const stat of hit.stats || []) {
-        const day = stat.day; // "2026-08-19"
+        const day = stat.day;
         const daily = stat.daily || 0;
         if (day === today) todayCount += daily;
         if (last7.has(day)) weekCount += daily;
       }
     }
 
-    res.json({ today: todayCount, week: weekCount });
+    res.json({ today: todayCount, week: weekCount, total: totalCount });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
