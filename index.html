@@ -147,12 +147,23 @@
     }
     .gh-star-btn:hover { background: #3d444e; color: #fff; transform: translateY(-2px); }
     .gh-star-btn i { font-size: 1rem; color: #ffd33d; }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
     .hero-tagline {
       font-size: 1.6rem;
       font-weight: 700;
       letter-spacing: .5px;
       margin-bottom: 12px;
       color: #fff;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .ht-word {
+      opacity: 0;
+      animation: fadeSlideUp .6s ease forwards;
     }
     .hero-chips {
       display: flex;
@@ -231,7 +242,11 @@
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <h2>Habib Abdul Ghani</h2>
-        <p class="hero-tagline">I Learn. I Build. I Teach.</p>
+        <p class="hero-tagline">
+          <span class="ht-word" style="animation-delay:.1s">I Learn.</span>
+          <span class="ht-word" style="animation-delay:.6s">I Build.</span>
+          <span class="ht-word" style="animation-delay:1.1s">I Teach.</span>
+        </p>
         <p class="hero-subtitle">
           Guru DKV dan programmer yang senang membangun solusi nyata, mengeksplorasi teknologi, dan berbagi apa yang dipelajari.
         </p>
