@@ -147,6 +147,33 @@
     }
     .gh-star-btn:hover { background: #3d444e; color: #fff; transform: translateY(-2px); }
     .gh-star-btn i { font-size: 1rem; color: #ffd33d; }
+    .hero-tagline {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .hero-chips {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .hero-chip {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,.9);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 4px;
+      padding: 4px 10px;
+    }
+    .hero-chip-sep {
+      color: rgba(255,255,255,.4);
+      font-size: .9rem;
+    }
   </style>
 </head>
 
@@ -204,10 +231,17 @@
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <h2>Habib Abdul Ghani</h2>
-        <p>I'm <span class="typed" data-typed-items="Guru DKV, Programmer Python, AI Enthusiast, Android Developer, Software Engineer">Guru DKV</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
+        <p class="hero-tagline">I Learn. I Build. I Teach.</p>
         <p class="hero-subtitle">
-          Guru DKV di SMK Puspita Husada &amp; Asisten Lab Komputer Universitas Pamulang — membangun solusi berbasis AI, otomasi, dan perangkat lunak. Saya percaya teknologi bukan hanya untuk dibangun, tetapi juga untuk diajarkan dan memberikan dampak nyata.
+          Guru DKV dan programmer yang senang membangun solusi nyata, mengeksplorasi teknologi, dan berbagi apa yang dipelajari.
         </p>
+        <div class="hero-chips">
+          <span class="hero-chip">EDUCATOR</span>
+          <span class="hero-chip-sep">·</span>
+          <span class="hero-chip">BUILDER</span>
+          <span class="hero-chip-sep">·</span>
+          <span class="hero-chip">LEARNER</span>
+        </div>
         <div class="cv-buttons">
           <a href="assets/docs/cv-habib-abdul-ghani.pdf" download class="btn-download">
             <i class="bi bi-download"></i> Download CV
@@ -1186,7 +1220,6 @@
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/typed.js/typed.umd.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
