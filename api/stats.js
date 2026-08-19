@@ -17,9 +17,8 @@ module.exports = async function handler(req, res) {
     const url = `https://habibabdulghani.goatcounter.com/api/v0/stats/hits?start=${start}&end=${end}`;
     const r = await fetch(url, { headers });
     const text = await r.text();
-    if (!r.ok) return { error: r.status, body: text.slice(0, 300) };
     try { return JSON.parse(text); }
-    catch(e) { return { error: 'invalid json', body: text.slice(0, 300) }; }
+    catch(e) { return { error: 'invalid json', body: text.slice(0, 500) }; }
   };
 
   try {
@@ -28,12 +27,8 @@ module.exports = async function handler(req, res) {
       gcFetch(weekAgo, today)
     ]);
 
-    if (d1.error || d2.error) {
-      return res.status(502).json({ debug: { d1, d2 } });
-    }
-
-    const sum = arr => (arr || []).reduce((s, h) => s + (h.count || 0), 0);
-    res.json({ today: sum(d1.hits), week: sum(d2.hits) });
+    // Sementara return raw untuk debug
+    res.json({ today_raw: d1, week_raw: d2 });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
