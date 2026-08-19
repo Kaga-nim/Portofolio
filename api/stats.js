@@ -1,9 +1,19 @@
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=60');
 
   const token = process.env.GC_TOKEN;
-  if (!token) return res.status(500).json({ error: 'Token not configured' });
+
+  // DEBUG: cek apakah token terbaca (tidak expose nilainya)
+  if (!token) {
+    return res.status(500).json({
+      error: 'Token not configured',
+      debug: {
+        hasToken: false,
+        gcEnvKeys: Object.keys(process.env).filter(k => k.includes('GC')),
+        nodeVersion: process.version
+      }
+    });
+  }
 
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
@@ -27,9 +37,10 @@ module.exports = async function handler(req, res) {
 
     res.json({
       today: sum(d1.hits),
-      week: sum(d2.hits)
+      week: sum(d2.hits),
+      debug: { d1, d2 }
     });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to fetch stats' });
+    res.status(500).json({ error: e.message, stack: e.stack });
   }
 };
