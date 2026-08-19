@@ -11,13 +11,10 @@ module.exports = async function handler(req, res) {
   const today = fmt(now);
   const weekAgo = fmt(new Date(now - 6 * 24 * 60 * 60 * 1000));
 
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
+  const headers = { 'Authorization': `Bearer ${token}` };
 
   const gcFetch = async (start, end) => {
-    const url = `https://habibabdulghani.goatcounter.com/api/v0/stats/hits?start=${encodeURIComponent(start + ' 00:00:00')}&end=${encodeURIComponent(end + ' 23:59:59')}`;
+    const url = `https://habibabdulghani.goatcounter.com/api/v0/stats/hits?start=${start}&end=${end}`;
     const r = await fetch(url, { headers });
     const text = await r.text();
     if (!r.ok) return { error: r.status, body: text.slice(0, 300) };
