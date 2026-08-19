@@ -1360,18 +1360,23 @@
 
 <script>
   (function() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var words = document.querySelectorAll('.ht-word');
     if (!words.length) return;
     var current = 0;
     function cycle() {
       words.forEach(function(w, i) {
-        w.style.transition = 'opacity 0.7s ease';
-        w.style.opacity = i === current ? '1' : '0.3';
+        w.style.transition = 'opacity 0.6s ease, text-shadow 0.6s ease';
+        if (i === current) {
+          w.style.opacity = '1';
+          w.style.textShadow = '0 0 18px rgba(255,255,255,0.7)';
+        } else {
+          w.style.opacity = '0.15';
+          w.style.textShadow = 'none';
+        }
       });
       current = (current + 1) % words.length;
     }
-    setTimeout(function() { cycle(); setInterval(cycle, 2500); }, 2200);
+    setTimeout(function() { cycle(); setInterval(cycle, 2500); }, 2000);
   })();
 </script>
 
